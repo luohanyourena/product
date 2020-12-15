@@ -2,6 +2,7 @@ package com.letter.product.controller;
 
 import com.letter.product.common.DecreaseStockInput;
 import com.letter.product.common.ProductInfoOutput;
+import com.letter.product.config.GirlConfig;
 import com.letter.product.dataobject.ProductCategory;
 import com.letter.product.dataobject.ProductInfo;
 import com.letter.product.service.ProductCategoryService;
@@ -12,6 +13,8 @@ import com.letter.product.vo.ProductVO;
 import com.letter.product.vo.ResultVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/product")
+@RefreshScope
 public class ProductInfoCtrl {
     @Autowired
     private ProductCategoryService productCategoryService;
@@ -27,9 +31,15 @@ public class ProductInfoCtrl {
     @Autowired
     private ProductInfoService productInfoService;
 
+    @Autowired
+    private GirlConfig girlConfig;
+
+    @Value("env")
+    private String env;
+
     @GetMapping("/msg")
     public String productMsg(){
-        return "this is shibada!";
+        return "girl-name:"+girlConfig.getName()+",girl-age:"+girlConfig.getAge();
     }
 
     @GetMapping("/list")
